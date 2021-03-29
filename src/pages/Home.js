@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
+import { apiGet } from '../misc/Config';
 
 // eslint-disable-next-line arrow-body-style
 const Home = () => {
   const [input, setInput] = useState('');
+  const [results, setResult] = useState(null);
 
   const onSearch = () => {
-    // https://api.tvmaze.com/search/shows?q=girls
-    fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
-      .then(r => r.json())
-      .then(result => {
-        console.log(result);
-      });
+    apiGet(`/search/shows?q=${input}`).then(result => {
+      setResult(result);
+      // console.log(result);
+    });
   };
 
   const onInputChange = ev => {
@@ -26,6 +26,24 @@ const Home = () => {
     }
   };
 
+  const renderResults = () => {
+    if (results && results.length === 0) {
+      return <div>No Results</div>;
+    }
+
+    if (results && results.length > 0) {
+      return (
+        <div>
+          {results.map(items => (
+            <div key={items.show.id}>{items.show.name}</div>
+          ))}
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <MainPageLayout>
       <input
@@ -37,6 +55,7 @@ const Home = () => {
       <button type="button" onClick={onSearch}>
         Search
       </button>
+      {renderResults()}
     </MainPageLayout>
   );
 };
