@@ -3,10 +3,11 @@ import ActorGrid from '../components/actor/ActorGrid';
 import MainPageLayout from '../components/MainPageLayout';
 import ShowGrid from '../components/show/ShowGrid';
 import { apiGet } from '../misc/Config';
+import { useLastQuery } from '../misc/Custom-hooks';
 
 // eslint-disable-next-line arrow-body-style
 const Home = () => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useLastQuery();
   const [results, setResult] = useState(null);
   const [searchOption, setSearchOption] = useState('shows');
 
