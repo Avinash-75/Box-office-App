@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useCallback } from 'react';
 import ShowCard from './ShowCard';
 
 import IMAGE_NOT_FOUND from '../../images/not-found.png';
@@ -13,14 +14,14 @@ const ShowGrid = ({ data }) => {
     <FlexGrid>
       {data.map(({ show }) => {
         const isStarred = starredShows.includes(show.id);
-
-        const onStarClick = () => {
+        // useCallback can be used only inside Components & data.map is a component which isn't explicitly defined
+        const onStarClick = useCallback(() => {
           if (isStarred) {
             dispatchStarred({ type: 'REMOVE', showId: show.id });
           } else {
             dispatchStarred({ type: 'ADD', showId: show.id });
           }
-        };
+        }, [isStarred, show.id]);
 
         return (
           <ShowCard
